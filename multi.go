@@ -28,8 +28,9 @@ type S7DataItemWithResponse struct {
 	Start    int
 	Bit      int
 	Amount   int
-	OnData   func([]byte)
-	OnError  func(string)
+	Id       string
+	OnData   func(string, []byte)
+	OnError  func(string, string)
 }
 
 // implement WriteMulti
@@ -337,14 +338,14 @@ func (mb *client) AGReadMultiResponse(dataItems []S7DataItemWithResponse, itemsC
 			if item1 != tsResOctet && item1 != tsResReal && item1 != tsResBit {
 				itemSize = itemSize >> 3
 			}
-			dataItems[i].OnData(s7ItemRead[4 : 4+itemSize])
+			dataItems[i].OnData(dataItems[i].Id, s7ItemRead[4:4+itemSize])
 
 			if itemSize%2 != 0 {
 				itemSize++ // Odd size are rounded
 			}
 			offset = offset + 4 + itemSize
 		} else {
-			dataItems[i].OnError(ErrorText(CPUError(uint(s7ItemRead[0]))))
+			dataItems[i].OnError(dataItems[i].Id, ErrorText(CPUError(uint(s7ItemRead[0]))))
 			offset += 4 // Skip the Item header
 		}
 	}
