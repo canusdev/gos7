@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-//Client interface s7 client
+// Client interface s7 client
 type Client interface {
 	/***************start API AG (Automatisationsgerät)***************/
 	//Read data blocks from PLC
@@ -36,6 +36,7 @@ type Client interface {
 	AGWriteCT(start int, size int, buffer []byte) (err error)
 	//multi read area
 	AGReadMulti(dataItems []S7DataItem, itemsCount int) (err error)
+	AGReadMultiResponse(dataItems []S7DataItemWithResponse, itemsCount int) (err error)
 	//multi write area
 	AGWriteMulti(dataItems []S7DataItem, itemsCount int) (err error)
 	/*block*/
