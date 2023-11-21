@@ -30,7 +30,7 @@ type S7DataItemWithResponse struct {
 	Amount   int
 	Id       string
 	Params   interface{}
-	OnData   func(string, []byte)
+	OnData   func(string, []byte, interface{})
 	OnError  func(string, string)
 }
 
@@ -339,7 +339,7 @@ func (mb *client) AGReadMultiResponse(dataItems []S7DataItemWithResponse, itemsC
 			if item1 != tsResOctet && item1 != tsResReal && item1 != tsResBit {
 				itemSize = itemSize >> 3
 			}
-			dataItems[i].OnData(dataItems[i].Id, s7ItemRead[4:4+itemSize])
+			dataItems[i].OnData(dataItems[i].Id, s7ItemRead[4:4+itemSize], dataItems[i].Params)
 
 			if itemSize%2 != 0 {
 				itemSize++ // Odd size are rounded
