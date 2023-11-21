@@ -29,6 +29,7 @@ type S7DataItemWithResponse struct {
 	Bit      int
 	Amount   int
 	Id       string
+	Params   interface{}
 	OnData   func(string, []byte)
 	OnError  func(string, string)
 }
